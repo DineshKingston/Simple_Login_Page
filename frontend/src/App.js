@@ -5,19 +5,22 @@ import './App.css';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
 
-  const handleLogin = () => {
+  const handleLogin = (userData) => {
     setIsLoggedIn(true);
+    setUser(userData || { username: 'User' });
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
+    setUser(null);
   };
 
   return (
     <div className="App">
       {isLoggedIn ? (
-        <Dashboard onLogout={handleLogout} />
+        <Dashboard user={user} onLogout={handleLogout} />
       ) : (
         <Login onLogin={handleLogin} />
       )}

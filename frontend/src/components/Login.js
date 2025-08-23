@@ -6,9 +6,11 @@ const Login = ({ onLogin }) => {
     username: '',
     password: ''
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     
     const params = new URLSearchParams();
     params.append('username', credentials.username);
@@ -26,42 +28,60 @@ const Login = ({ onLogin }) => {
     .catch(error => {
       alert('Invalid credentials');
       console.error('Login error:', error);
+    })
+    .finally(() => {
+      setIsLoading(false);
     });
   };
 
   return (
     <div className="login-container">
       <div className="login-card">
-        <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
+        <div className="login-header">
+          <div className="login-logo">📄</div>
+          <h2>Welcome Back</h2>
+          <p>Sign in to your account</p>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="login-form">
           <div className="input-group">
+            <label>Username</label>
             <input
               type="text"
-              placeholder="Username"
+              placeholder="Enter your username"
               value={credentials.username}
               onChange={(e) => setCredentials({
                 ...credentials, 
                 username: e.target.value
               })}
               required
+              disabled={isLoading}
             />
           </div>
+          
           <div className="input-group">
+            <label>Password</label>
             <input
               type="password"
-              placeholder="Password"
+              placeholder="Enter your password"
               value={credentials.password}
               onChange={(e) => setCredentials({
                 ...credentials, 
                 password: e.target.value
               })}
               required
+              disabled={isLoading}
             />
           </div>
-          <button type="submit" className="login-btn">
-            Login
+          
+          <button type="submit" className="login-btn" disabled={isLoading}>
+            {isLoading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
+        
+        <div className="login-footer">
+          <p>Document Search System</p>
+        </div>
       </div>
     </div>
   );
